@@ -3,610 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b2d24">
 <title>RENTLOOP — Use More. Own Less.</title>
+<meta name="description" content="Rent the things you need, when you need them. Discover useful items from people around you with RENTLOOP.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-:root{
- --green:#087f5b;
- --dark:#123d30;
- --light:#eaf5ef;
- --bg:#f7f9f7;
- --text:#172b25;
- --muted:#718078;
-}
- /* ADD PRODUCT FORM */
-.add-product-box {
-    background: #fff;
-    width: 92%;
-    max-width: 480px;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 25px;
-    border-radius: 18px;
-    margin: 5vh auto;
-    color: #222;
-}
-
-.add-product-box h2 {
-    margin: 0 0 18px;
-    font-size: 24px;
-}
-
-.add-product-box input,
-.add-product-box select,
-.add-product-box textarea {
-    width: 100%;
-    padding: 13px;
-    margin: 8px 0 14px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 15px;
-    box-sizing: border-box;
-}
-
-.add-product-box textarea {
-    min-height: 90px;
-    resize: vertical;
-}
-
-.add-product-box button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: #111;
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.add-product-box .close-btn {
-    background: #eee;
-    color: #222;
-    margin-top: 10px;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
-button,input{font:inherit}
-button{cursor:pointer}
-header{
- background:white;padding:17px 7%;display:flex;align-items:center;
- justify-content:space-between;position:sticky;top:0;z-index:10;
- box-shadow:0 3px 20px #102e2010
-}
-.logo{font-family:Manrope;font-size:27px;font-weight:800;color:var(--green);letter-spacing:-1.5px}
-.logo span{color:var(--text)}
-nav{display:flex;align-items:center;gap:12px}
-.navlink{border:0;background:none;font-weight:700;color:var(--text);padding:10px}
-.btn{
- border:0;border-radius:10px;padding:12px 20px;
- background:var(--green);color:white;font-weight:700;
- transition:.2s
-}
-.btn:hover{background:var(--dark);transform:translateY(-2px)}
-.btn-light{background:var(--light);color:var(--green)}
-.hero{
- margin:25px auto 0;width:92%;max-width:1400px;min-height:390px;
- border-radius:25px;overflow:hidden;position:relative;
- display:flex;align-items:center;padding:55px 7%;
- background:linear-gradient(90deg,#092e24 0%,#092e24e8 45%,#092e2450 100%),
- url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600') center/cover;
- color:white
-}
-.hero-content{max-width:620px}
-.eyebrow{font-size:12px;letter-spacing:2px;font-weight:800;color:#b5e4ca}
-.hero h1{font-family:Manrope;font-size:clamp(38px,6vw,65px);line-height:1.08;margin:16px 0}
-.hero p{font-size:17px;color:#e0eee6;line-height:1.7}
-.searchbox{
- margin-top:30px;background:white;padding:8px;border-radius:13px;
- display:flex;gap:8px;max-width:570px
-}
-.searchbox input{border:0;outline:0;flex:1;min-width:0;padding:12px;color:#172b25}
-.searchbox button{white-space:nowrap}
-.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px;color:#e0eee6;font-size:13px}
-section{max-width:1400px;margin:auto;padding:55px 7%}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:25px}
-.section-head h2{font:800 28px Manrope;margin:0}
-.section-head p{margin:7px 0 0;color:var(--muted)}
-.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
-.category{
- border:1px solid #e7ece8;background:white;border-radius:16px;
- padding:22px 12px;text-align:center;font-weight:700;
- transition:.2s;cursor:pointer
-}
-.category:hover,.category.active{border-color:var(--green);background:var(--light);color:var(--green);transform:translateY(-3px)}
-.cat-icon{font-size:30px;display:block;margin-bottom:10px}
-.products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.card{
- background:white;border:1px solid #e9eee9;border-radius:17px;
- overflow:hidden;transition:.25s
-}
-.card:hover{transform:translateY(-5px);box-shadow:0 14px 35px #102e2012}
-.photo{height:190px;position:relative;background:#e9f0eb}
-.photo img{width:100%;height:100%;object-fit:cover;display:block}
-.badge{
- position:absolute;top:13px;left:13px;background:white;color:var(--green);
- padding:7px 11px;border-radius:20px;font-size:11px;font-weight:800
-}
-.card-body{padding:17px}
-.card h3{font:800 17px Manrope;margin:0 0 7px}
-.description{font-size:13px;color:var(--muted);margin:0 0 15px}
-.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.price{font-size:18px;color:var(--green);font-weight:800}
-.price small{font-size:11px;color:var(--muted);font-weight:500}
-.card-bottom button{padding:9px 13px;font-size:12px}
-.banner{
- background:var(--dark);color:white;border-radius:22px;padding:38px;
- display:flex;justify-content:space-between;align-items:center;gap:20px
-}
-.banner h2{font:800 27px Manrope;margin:0 0 9px}
-.banner p{color:#d1e5d9;margin:0}
-footer{background:#0d2c23;color:white;padding:40px 7%;margin-top:30px}
-.footer-inner{max-width:1400px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-footer p{color:#b8cfc2;font-size:13px}
-#authBox{
- display:none;position:fixed;inset:0;background:#071b16b8;
- z-index:30;align-items:center;justify-content:center;padding:18px
-}
-.auth-panel{background:white;border-radius:20px;padding:28px;width:100%;max-width:390px}
-.auth-panel h2{font:800 25px Manrope;margin:0 0 8px}
-.auth-panel p{color:var(--muted);font-size:13px}
-.auth-panel input{
- width:100%;padding:14px;border:1px solid #dce5df;
- border-radius:10px;margin:8px 0;outline-color:var(--green)
-}
-.auth-actions{display:flex;gap:10px;margin-top:12px}
-.auth-actions button{flex:1}
-#message{overflow-wrap:anywhere;font-size:13px}
-@media(max-width:900px){
- .products{grid-template-columns:repeat(2,1fr)}
- .categories{grid-template-columns:repeat(3,1fr)}
-}
-@media(max-width:600px){
- header{padding:14px 4%}
- .logo{font-size:22px}
- .navlink{display:none}
- nav .btn{padding:10px 12px;font-size:12px}
- .hero{width:94%;padding:38px 23px;min-height:390px}
- .hero h1{font-size:40px}
- .hero p{font-size:14px}
- .searchbox{flex-direction:column}
- .searchbox input{padding:13px}
- section{padding:38px 5%}
- .section-head h2{font-size:23px}
- .categories{grid-template-columns:repeat(2,1fr);gap:10px}
- .category{padding:17px 8px;font-size:13px}
- .cat-icon{font-size:26px}
- .products{grid-template-columns:1fr 1fr;gap:11px}
- .photo{height:125px}
- .card-body{padding:12px}
- .card h3{font-size:14px}
- .description{font-size:11px}
- .price{font-size:15px}
- .card-bottom{align-items:flex-start;flex-direction:column}
- .card-bottom button{width:100%}
- .banner{padding:25px;display:block}
- .banner button{margin-top:18px}
-}
+:root{--green:#087f5b;--green2:#10a875;--dark:#0b2d24;--ink:#15251f;--muted:#6f7e77;--bg:#f5f8f5;--line:#e5ece7;--white:#fff;--soft:#eaf5ef;--shadow:0 18px 55px #0b2d2412}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,92%);margin:auto}
+header{height:76px;background:#ffffffed;backdrop-filter:blur(14px);position:sticky;top:0;z-index:20;border-bottom:1px solid #e9efeb}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:800 27px Manrope,sans-serif;letter-spacing:-1.4px;color:var(--green)}.brand span{color:var(--ink)}
+.navlinks{display:flex;align-items:center;gap:24px}.navlinks a{font-size:14px;font-weight:700;color:#45554d}.nav-actions{display:flex;align-items:center;gap:9px}
+.btn{border:0;border-radius:12px;padding:12px 18px;background:var(--green);color:#fff;font-weight:800;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn:hover{background:var(--dark);transform:translateY(-1px)}.btn.secondary{background:var(--soft);color:var(--green)}.btn.dark{background:var(--dark)}.btn.outline{background:#fff;color:var(--green);border:1px solid #cfe1d6}.btn.small{padding:9px 13px;font-size:12px}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.hero{margin:28px auto 0;min-height:460px;border-radius:28px;overflow:hidden;position:relative;background:linear-gradient(90deg,#082a21 0%,#082a21ed 43%,#082a2180 100%),url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85") center/cover;display:flex;align-items:center;color:#fff;padding:65px 7%}
+.hero-inner{max-width:660px}.eyebrow{color:#a9e3c2;font-size:11px;letter-spacing:2.4px;font-weight:800}.hero h1{font:800 clamp(42px,6vw,70px)/1.04 Manrope;margin:17px 0}.hero h1 em{font-style:normal;color:#a9e3c2}.hero p{font-size:17px;line-height:1.7;color:#dcebe2;max-width:560px}.searchbar{display:flex;gap:8px;background:#fff;border-radius:15px;padding:7px;margin-top:28px;max-width:580px}.searchbar input{border:0;outline:0;flex:1;min-width:0;padding:12px;color:var(--ink)}.hero-points{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;color:#e0eee6;font-size:12px;font-weight:700}
+section{padding:58px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:25px}.kicker{color:var(--green);font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}.section-head h2{font:800 30px Manrope;margin:7px 0 5px;letter-spacing:-.7px}.section-head p{margin:0;color:var(--muted);font-size:14px}
+.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:13px}.category{border:1px solid var(--line);background:#fff;border-radius:17px;padding:20px 10px;text-align:center;font-weight:800;font-size:13px;transition:.2s;cursor:pointer}.category:hover,.category.active{border-color:#9bcdb1;background:var(--soft);color:var(--green);transform:translateY(-3px)}.cat-icon{display:block;font-size:27px;margin-bottom:10px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.22s;min-width:0}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.photo{height:190px;position:relative;background:#e8f0eb}.photo img{width:100%;height:100%;object-fit:cover;display:block}.badge{position:absolute;top:12px;left:12px;background:#fff;color:var(--green);border-radius:30px;padding:7px 10px;font-size:10px;font-weight:800}.sample{position:absolute;right:10px;top:10px;background:#132b22d9;color:#fff;border-radius:30px;padding:6px 9px;font-size:9px;font-weight:800}.card-body{padding:16px}.card h3{font:800 16px Manrope;margin:0 0 7px}.description{color:var(--muted);font-size:12px;min-height:34px;margin:0 0 14px}.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}.price{font-size:18px;color:var(--green);font-weight:800}.price small{font-size:10px;color:var(--muted);font-weight:600}.empty{grid-column:1/-1;background:#fff;border:1px dashed #cbd9d0;border-radius:18px;padding:42px;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--ink);font:800 18px Manrope;margin-bottom:7px}
+.callout{background:linear-gradient(115deg,#0b2d24,#14513c);border-radius:24px;padding:38px 42px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px}.callout h2{font:800 27px Manrope;margin:0 0 8px}.callout p{margin:0;color:#cfe2d6;font-size:14px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.how-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:23px}.how-icon{width:42px;height:42px;border-radius:13px;background:var(--soft);display:grid;place-items:center;font-size:21px}.how-card h3{font:800 16px Manrope;margin:16px 0 7px}.how-card p{color:var(--muted);font-size:13px;line-height:1.6;margin:0}
+footer{background:#08251d;color:#fff;padding:42px 0;margin-top:25px}.footer-row{display:flex;justify-content:space-between;align-items:start;gap:25px;flex-wrap:wrap}.footer-row p{color:#b6cfc1;font-size:13px}.footer-brand{font:800 26px Manrope;color:#9fe0ba}.footer-brand span{color:#fff}
+.overlay{display:none;position:fixed;inset:0;background:#061a14b8;z-index:50;padding:18px;overflow:auto;align-items:center;justify-content:center}.modal{width:min(100%,480px);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:26px;box-shadow:0 25px 90px #0003}.modal.wide{width:min(100%,760px)}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.modal-head h2{font:800 23px Manrope;margin:0}.x{border:0;background:#eef4f0;border-radius:10px;width:36px;height:36px;font-size:20px;color:#31463b}.subtext{color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 17px}
+.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:#34473d}.field input,.field select,.field textarea{width:100%;border:1px solid #dce6df;border-radius:11px;padding:12px 13px;outline-color:var(--green);background:#fff;color:var(--ink)}.field textarea{min-height:85px;resize:vertical}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{width:100%}.message{font-size:12px;line-height:1.5;margin:12px 0;color:var(--green);overflow-wrap:anywhere}.message.error{color:#b42318}.switchline{text-align:center;color:var(--muted);font-size:12px;margin:14px 0 0}.textbtn{border:0;background:none;color:var(--green);font-weight:800;padding:4px}
+.detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:22px}.detail-img{width:100%;height:300px;object-fit:cover;border-radius:16px;background:#edf3ef}.detail-info h2{font:800 24px Manrope;margin:4px 0 8px}.detail-price{font-size:23px;color:var(--green);font-weight:800}.detail-info p{color:var(--muted);font-size:13px;line-height:1.6}.notice{background:#f1f7f3;border-radius:12px;padding:12px;color:#466253;font-size:12px;line-height:1.5;margin:12px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:#fff;border-radius:30px;padding:9px 14px;font-size:12px;font-weight:800;color:#4a5b51}.tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.dash-list{display:grid;gap:11px}.dash-item{border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;gap:12px;align-items:center}.dash-item strong{display:block;font-size:13px}.dash-item small{color:var(--muted);font-size:11px}.status{font-size:10px;font-weight:800;border-radius:20px;padding:6px 9px;background:#edf4ef;color:#35624b;white-space:nowrap}.dash-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid #ffffff66;border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.products{grid-template-columns:repeat(3,1fr)}.categories{grid-template-columns:repeat(3,1fr)}.navlinks{gap:12px}}
+@media(max-width:650px){header{height:66px}.brand{font-size:23px}.navlinks{display:none}.nav-actions .btn{padding:10px 11px;font-size:11px}.hero{width:94%;padding:38px 23px;min-height:440px;border-radius:22px}.hero h1{font-size:43px}.hero p{font-size:14px}.searchbar{flex-direction:column}.searchbar .btn{width:100%}section{padding:42px 0}.section-head h2{font-size:24px}.categories{grid-template-columns:repeat(2,1fr);gap:10px}.category{padding:16px 7px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:130px}.card-body{padding:12px}.card h3{font-size:13px}.description{font-size:10px;min-height:31px}.card-foot{align-items:stretch;flex-direction:column}.price{font-size:16px}.card-foot .btn{width:100%;padding:9px}.callout{padding:25px;display:block}.callout .btn{margin-top:17px}.how-grid{grid-template-columns:1fr}.grid2,.detail-layout{grid-template-columns:1fr}.detail-img{height:210px}.modal{padding:20px}.dash-item{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
-
 <body>
-
-<header>
- <div class="logo">RENT<span>LOOP.</span></div>
- <nav>
-  <button class="navlink" onclick="document.getElementById('categories').scrollIntoView()">Explore</button>
-  <button class="navlink" onclick="document.getElementById('popular').scrollIntoView()">Rent Items</button>
-  <button class="btn" onclick="showAuth()">Login / Sign Up</button>
-  <button class="btn btn-light" id="logout" onclick="logout()" style="display:none">Logout</button>
- </nav>
-</header>
-
+<header><div class="wrap nav">
+<a class="brand" href="#">RENT<span>LOOP.</span></a>
+<div class="navlinks"><a href="#categories">Explore</a><a href="#listings">Rent items</a><a href="#how">How it works</a></div>
+<div class="nav-actions"><button class="btn secondary" id="dashboardBtn" style="display:none" onclick="openDashboard()">Dashboard</button><button class="btn" id="authBtn" onclick="openAuth()">Login / Sign up</button><button class="btn secondary" id="logoutBtn" style="display:none" onclick="logout()">Logout</button></div>
+</div></header>
 <main>
-<div class="hero">
- <div class="hero-content">
-  <div class="eyebrow">THE SMARTER WAY TO OWN LESS</div>
-  <h1>Need it?<br>Rent it. <span style="color:#a8e0bd">Simple.</span></h1>
-  <p>From everyday essentials to special moments — find what you need, when you need it.</p>
-  <div class="searchbox">
-   <input id="search" placeholder="What are you looking for today?">
-   <button class="btn" onclick="searchProducts()">Search Items →</button>
-  </div>
-  <div class="trust">
-   <span>✓ Easy discovery</span>
-   <span>✓ Smart renting</span>
-   <span>✓ Less waste</span>
-  </div>
- </div>
-</div>
+<div class="wrap hero"><div class="hero-inner">
+<div class="eyebrow">THE SMARTER WAY TO OWN LESS</div>
+<h1>Need it?<br>Rent it. <em>Simple.</em></h1>
+<p>Discover useful things around you. Rent what you need, list what you own, and make everyday access easier.</p>
+<div class="searchbar"><input id="searchInput" type="search" placeholder="Search cricket kits, cameras, furniture..."><button class="btn" onclick="searchProducts()">Find items →</button></div>
+<div class="hero-points"><span>✓ Discover nearby items</span><span>✓ Flexible rental requests</span><span>✓ Share more, waste less</span></div>
+</div></div>
 
-<section id="categories">
- <div class="section-head">
-  <div><h2>Explore Categories</h2><p>Find the right thing for every need.</p></div>
- </div>
- <div class="categories">
-  <div class="category active" onclick="filter('All',this)"><span class="cat-icon">✦</span>All Items</div>
-  <div class="category" onclick="filter('Sports',this)"><span class="cat-icon">🏏</span>Sports</div>
-  <div class="category" onclick="filter('Electronics',this)"><span class="cat-icon">📷</span>Electronics</div>
-  <div class="category" onclick="filter('Furniture',this)"><span class="cat-icon">🪑</span>Furniture</div>
-  <div class="category" onclick="filter('Vehicles',this)"><span class="cat-icon">🚲</span>Vehicles</div>
- </div>
-</section>
+<section id="categories"><div class="wrap">
+<div class="section-head"><div><div class="kicker">Browse your way</div><h2>Explore categories</h2><p>Find the right thing for every need.</p></div></div>
+<div class="categories">
+<div class="category active" onclick="filterCategory('All',this)"><span class="cat-icon">✦</span>All items</div>
+<div class="category" onclick="filterCategory('Sports & Gear',this)"><span class="cat-icon">🏏</span>Sports & Gear</div>
+<div class="category" onclick="filterCategory('Electronics',this)"><span class="cat-icon">📷</span>Electronics</div>
+<div class="category" onclick="filterCategory('Home & Living',this)"><span class="cat-icon">🪑</span>Home & Living</div>
+<div class="category" onclick="filterCategory('Travel',this)"><span class="cat-icon">🧳</span>Travel</div>
+<div class="category" onclick="filterCategory('Tools & Equipment',this)"><span class="cat-icon">🛠️</span>Tools & Equipment</div>
+</div></div></section>
 
-<section id="popular">
- <div class="section-head">
-  <div><h2>Popular Rentals</h2><p>Useful things. Flexible rentals.</p></div>
-  <span style="color:var(--green);font-weight:700;font-size:13px">Explore more →</span>
- </div>
+<section id="listings" style="padding-top:8px"><div class="wrap">
+<div class="section-head"><div><div class="kicker">Handy finds</div><h2>Popular rentals</h2><p id="listingSubtitle">A few examples to show how RENTLOOP works.</p></div><button class="btn secondary small" onclick="openAddProduct()">＋ List an item</button></div>
+<div class="products" id="productsGrid"></div>
+</div></section>
 
- <div class="products" id="products">
+<section id="how"><div class="wrap">
+<div class="section-head"><div><div class="kicker">Simple by design</div><h2>How RENTLOOP works</h2><p>A straightforward way to rent and share useful items.</p></div></div>
+<div class="how-grid">
+<div class="how-card"><div class="how-icon">🔎</div><h3>1. Find what you need</h3><p>Explore categories and browse items listed by owners in your area.</p></div>
+<div class="how-card"><div class="how-icon">📅</div><h3>2. Send a request</h3><p>Choose your rental dates and send a booking request to the item owner.</p></div>
+<div class="how-card"><div class="how-icon">🤝</div><h3>3. Connect and arrange</h3><p>The owner can review your request. Confirm handover details directly before renting.</p></div>
+</div></div></section>
 
-  <article class="card" data-category="Sports">
-   <div class="photo">
-    <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=700" alt="Cricket equipment">
-    <span class="badge">SPORTS</span>
-   </div>
-   <div class="card-body">
-    <h3>Cricket Kit</h3><p class="description">Gear up for your next game.</p>
-    <div class="card-bottom"><div class="price">₹150 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
-   </div>
-  </article>
-
-  <article class="card" data-category="Electronics">
-   <div class="photo">
-    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=700" alt="Camera">
-    <span class="badge">ELECTRONICS</span>
-   </div>
-   <div class="card-body">
-    <h3>DSLR Camera</h3><p class="description">Capture every special moment.</p>
-    <div class="card-bottom"><div class="price">₹500 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
-   </div>
-  </article>
-
-  <article class="card" data-category="Furniture">
-   <div class="photo">
-    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=700" alt="Study workspace">
-    <span class="badge">FURNITURE</span>
-   </div>
-   <div class="card-body">
-    <h3>Study Table</h3><p class="description">Create your perfect workspace.</p>
-    <div class="card-bottom"><div class="price">₹100 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
-   </div>
-  </article>
-
-  <article class="card" data-category="Vehicles">
-   <div class="photo">
-    <img src="https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=700" alt="Bicycle">
-    <span class="badge">VEHICLES</span>
-   </div>
-   <div class="card-body">
-    <h3>Bicycle</h3><p class="description">Enjoy a ride around the city.</p>
-    <div class="card-bottom"><div class="price">₹120 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
-   </div>
-  </article>
-
- </div>
-</section>
-
-<section>
- <div class="banner">
-  <div><h2>Have something to share?</h2><p>Turn your unused items into useful opportunities.</p></div>
-  <button class="btn" style="background:white;color:var(--dark)" onclick="openAddProduct()">List Your Item →</button>
- </div>
-</section>
+<section style="padding-top:5px"><div class="wrap callout"><div><h2>Have something useful?</h2><p>List an item and let someone nearby make good use of it.</p></div><button class="btn" style="background:#fff;color:var(--dark)" onclick="openAddProduct()">List your item →</button></div></section>
 </main>
+<footer><div class="wrap footer-row"><div><div class="footer-brand">RENT<span>LOOP.</span></div><p>Use More. Own Less.</p></div><div><strong>Rent smarter. Share better.</strong><p>© 2026 RENTLOOP. All rights reserved.</p></div></div></footer>
 
-<footer>
- <div class="footer-inner">
-  <div><div class="logo" style="color:#9be0b7">RENT<span style="color:white">LOOP.</span></div><p>Use More. Own Less.</p></div>
-  <div><strong>RENTLOOP</strong><p>Rent smarter. Share better.</p><p>© 2026 RENTLOOP. All Rights Reserved.</p></div>
- </div>
-</footer>
+<!-- AUTH -->
+<div class="overlay" id="authModal" onclick="outsideClose(event,'authModal')"><div class="modal">
+<div class="modal-head"><h2 id="authTitle">Welcome to RENTLOOP</h2><button class="x" onclick="closeModal('authModal')">×</button></div>
+<p class="subtext" id="authSubtitle">Sign in or create an account to get started.</p>
+<div class="field" id="nameField" style="display:none"><label>Your name</label><input id="authName" autocomplete="name" placeholder="Enter your name"></div>
+<div class="field"><label>Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+<div class="field"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
+<button class="btn full" id="authSubmit" onclick="submitAuth()">Login</button>
+<div class="message" id="authMessage" aria-live="polite"></div>
+<div class="switchline"><span id="switchText">New to RENTLOOP?</span> <button class="textbtn" id="switchButton" onclick="toggleAuthMode()">Create account</button></div>
+<div style="text-align:center;margin-top:8px"><button class="textbtn" onclick="forgotPassword()">Forgot password?</button></div>
+</div></div>
 
-<div id="authBox" onclick="if(event.target===this)hideAuth()">
- <div class="auth-panel">
-  <h2>Welcome to RENTLOOP</h2>
-  <p>Login or create your account to get started.</p>
-  <input id="email" type="email" placeholder="Email address">
-  <input id="password" type="password" placeholder="Password">
-  <div class="auth-actions">
-   <button class="btn" onclick="signup()">Sign Up</button>
-   <button class="btn" style="background:var(--dark)" onclick="login()">Login</button>
-  </div>
-  <p id="message"></p>
-  <button class="btn btn-light" style="width:100%" onclick="hideAuth()">Close</button>
- </div>
+<!-- ADD PRODUCT -->
+<div class="overlay" id="addModal" onclick="outsideClose(event,'addModal')"><div class="modal">
+<div class="modal-head"><h2>List your item</h2><button class="x" onclick="closeModal('addModal')">×</button></div>
+<p class="subtext">Add clear details so renters know exactly what you're offering.</p>
+<div class="field"><label>Item name</label><input id="pTitle" maxlength="90" placeholder="e.g. Professional cricket kit"></div>
+<div class="field"><label>Description</label><textarea id="pDescription" maxlength="1200" placeholder="Describe the item, what's included, and any useful details."></textarea></div>
+<div class="grid2">
+<div class="field"><label>Category</label><select id="pCategory"><option value="">Choose category</option></select></div>
+<div class="field"><label>Daily rent (₹)</label><input id="pPrice" type="number" min="1" max="1000000" placeholder="e.g. 150"></div>
 </div>
+<div class="grid2">
+<div class="field"><label>Condition</label><select id="pCondition"><option value="">Choose condition</option><option>New</option><option>Like New</option><option>Good</option><option>Fair</option></select></div>
+<div class="field"><label>City</label><input id="pCity" maxlength="70" placeholder="Your city"></div>
+</div>
+<div class="field"><label>Item photo</label><input id="pImage" type="file" accept="image/jpeg,image/png,image/webp"></div>
+<button class="btn full" id="publishBtn" onclick="publishProduct()">Publish item</button>
+<div class="message" id="addMessage" aria-live="polite"></div>
+</div></div>
+
+<!-- PRODUCT DETAILS -->
+<div class="overlay" id="detailModal" onclick="outsideClose(event,'detailModal')"><div class="modal wide">
+<div class="modal-head"><h2>Item details</h2><button class="x" onclick="closeModal('detailModal')">×</button></div>
+<div class="detail-layout"><img id="detailImage" class="detail-img" alt="Item photo"><div class="detail-info">
+<div class="kicker" id="detailCategory"></div><h2 id="detailTitle"></h2><div class="detail-price" id="detailPrice"></div>
+<p id="detailDescription"></p><p id="detailMeta"></p>
+<div class="notice">Booking requests are subject to owner approval. Confirm the item's availability and handover details with the owner before making arrangements.</div>
+<div class="grid2"><div class="field"><label>Start date</label><input id="bookingStart" type="date"></div><div class="field"><label>End date</label><input id="bookingEnd" type="date"></div></div>
+<button class="btn full" id="bookingBtn" onclick="requestBooking()">Request booking</button><div class="message" id="bookingMessage"></div>
+</div></div>
+</div></div>
+
+<!-- DASHBOARD -->
+<div class="overlay" id="dashboardModal" onclick="outsideClose(event,'dashboardModal')"><div class="modal wide">
+<div class="modal-head"><h2>My dashboard</h2><button class="x" onclick="closeModal('dashboardModal')">×</button></div>
+<div class="tabs"><button class="tab active" onclick="showDashboardTab('myBookings',this)">My bookings</button><button class="tab" onclick="showDashboardTab('requests',this)">Rental requests</button><button class="tab" onclick="showDashboardTab('myListings',this)">My listings</button></div>
+<div id="dashboardContent"><p class="subtext">Loading your dashboard...</p></div>
+</div></div>
 
 <script>
-const client = window.supabase.createClient(
- "https://sevddlezaetefouudjnr.supabase.co",
- "sb_publishable_2MDPQNpZZYhnUUWo765dgg_CangZ4sd"
-);
+const SUPABASE_URL = "https://sevddlezaetefouudjnr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_2MDPQNpZZYhnUUWo765dgg_CangZ4sd";
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const CATEGORY_NAMES = ["Sports & Gear","Electronics","Home & Living","Travel","Tools & Equipment","Event & Party"];
+const SAMPLE_ITEMS = [
+ {id:"sample-cricket",title:"Cricket Kit",description:"A sample listing showing how sports equipment can appear on RENTLOOP.",daily_price:150,item_condition:"Good",city:"Sample city",category:"Sports & Gear",image:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=900&q=80"},
+ {id:"sample-camera",title:"DSLR Camera",description:"A sample listing for cameras and photography equipment.",daily_price:500,item_condition:"Like New",city:"Sample city",category:"Electronics",image:"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=80"},
+ {id:"sample-table",title:"Study Table",description:"A sample listing for useful home and study essentials.",daily_price:100,item_condition:"Good",city:"Sample city",category:"Home & Living",image:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=80"},
+ {id:"sample-cycle",title:"Bicycle",description:"A sample listing for bikes and everyday mobility.",daily_price:120,item_condition:"Good",city:"Sample city",category:"Travel",image:"https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=900&q=80"}
+];
+let allProducts = [];
+let categoryRows = [];
+let selectedProduct = null;
+let authMode = "login";
+let dashboardData = {};
 
-function showAuth(){
- document.getElementById("authBox").style.display="flex";
-}
-function hideAuth(){
- document.getElementById("authBox").style.display="none";
-}
-async function signup(){
- const email=document.getElementById("email").value;
- const password=document.getElementById("password").value;
- const {error}=await client.auth.signUp({email,password});
- document.getElementById("message").innerText=
- error ? error.message : "Check your email to confirm your account.";
-}
- async function login(){
- const email=document.getElementById("email").value;
- const password=document.getElementById("password").value;
- const {error}=await client.auth.signInWithPassword({email,password});
- document.getElementById("message").innerText=
- error ? error.message : "Login successful!";
- if(!error){
-  hideAuth();
- }
-}
-
-async function logout(){
- await client.auth.signOut();
-}
-async function logout(){
- await client.auth.signOut();
-}
-client.auth.onAuthStateChange((event,session)=>{
- document.getElementById("logout").style.display=
- session ? "inline-block" : "none";
-});
- async function loadProducts(){
- const container = document.getElementById("products");
-
- const { data: products, error } = await client
-  .from("products")
-  .select("*")
-  .eq("is_active", true)
-  .order("created_at", { ascending: false });
-
- if(error){
-  console.error("Products loading failed:", error.message);
-  return;
- }
-
- if(!products || products.length === 0) return;
-
- const { data: categories } = await client
-  .from("categories")
-  .select("id,name");
-
- const categoryMap = {};
- (categories || []).forEach(c => {
-  categoryMap[c.id] = c.name;
- });
-
- products.forEach(product => {
-  const categoryName = categoryMap[product.category_id] || "Other";
-
-  const filterCategory = {
-   "Sports & Gear": "Sports",
-   "Electronics": "Electronics",
-   "Home & Living": "Furniture",
-   "Travel": "Vehicles"
-  }[categoryName] || "Other";
-
-  const card = document.createElement("article");
-  card.className = "card";
-  card.dataset.category = filterCategory;
-
-  card.innerHTML = `
-   <div class="photo">
-    <img src="${product.image_path || ""}" alt="Product image">
-    <span class="badge"></span>
-   </div>
-   <div class="card-body">
-    <h3></h3>
-    <p class="description"></p>
-    <div class="card-bottom">
-     <div class="price">₹${Number(product.daily_price)} <small>/ day</small></div>
-     <button class="btn" onclick="rent(this)">Rent Now</button>
-    </div>
-   </div>
-  `;
-
-  card.querySelector(".badge").textContent = categoryName;
-  card.querySelector("h3").textContent = product.title;
-  card.querySelector(".description").textContent =
-   product.city + " · " + product.item_condition;
-
-  container.appendChild(card);
- });
- }
-function filter(category,element){
- document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
- element.classList.add("active");
- document.querySelectorAll(".card").forEach(card=>{
-  card.style.display=(category==="All" || card.dataset.category===category)?"block":"none";
- });
-}
-function searchProducts(){
- const value=document.getElementById("search").value.toLowerCase();
- document.querySelectorAll(".card").forEach(card=>{
-  card.style.display=card.innerText.toLowerCase().includes(value)?"block":"none";
- });
-}
- function rent(button){
- const card = button.closest(".card");
-
- document.getElementById("detailName").innerText = card.querySelector("h3").innerText;
- document.getElementById("detailImage").src = card.querySelector("img").src;
- document.getElementById("detailPrice").innerText = card.querySelector(".price").innerText;
- document.getElementById("detailDescription").innerText = card.querySelector(".description").innerText;
-
- document.getElementById("productDetails").style.display = "flex";
- }
-
-function closeDetails(){
- document.getElementById("productDetails").style.display = "none";
-}
- async function openAddProduct(){
- const { data: { session } } = await client.auth.getSession();
-
- if(!session){
-  showAuth();
-  return;
- }
-
- document.getElementById("addProductBox").style.display="block";
-
- const categorySelect = document.getElementById("newCategory");
-
- if(categorySelect.options.length > 1) return;
-
- const { data, error } = await client
-  .from("categories")
-  .select("id,name");
-
- if(error){
-  alert("Categories loading failed: " + error.message);
-  return;
- }
-
- data.forEach(category => {
-  const option = document.createElement("option");
-  option.value = category.id;
-  option.textContent = category.name;
-  categorySelect.appendChild(option);
- });
-}
-
-function closeAddProduct(){
- document.getElementById("addProductBox").style.display="none";
-}
-
-async function addProduct(){
- const { data: { session } } = await client.auth.getSession();
-
- if(!session){
-  alert("Please login first.");
-  showAuth();
-  return;
- }
-
- const title = document.getElementById("newTitle").value.trim();
- const category = document.getElementById("newCategory").value;
- const description = document.getElementById("newDescription").value.trim();
- const price = Number(document.getElementById("newPrice").value);
- const condition = document.getElementById("newCondition").value;
- const city = document.getElementById("newCity").value.trim();
- const imageFile = document.getElementById("newImage").files[0];
-
- if(!title || !category || !description || !price || price <= 0 || !condition || !city || !imageFile){
-  alert("Please fill all fields and select an image.");
-  return;
- }
-
- if(!imageFile.type.startsWith("image/")){
-  alert("Please select a valid image.");
-  return;
- }
-
- const button = document.querySelector("#addProductBox button");
- button.disabled = true;
- button.textContent = "Publishing...";
-
- try {
-  const extension = imageFile.name.split(".").pop();
-  const imagePath = session.user.id + "/" + crypto.randomUUID() + "." + extension;
-
-  const { error: uploadError } = await client.storage
-   .from("product-images")
-   .upload(imagePath, imageFile);
-
-  if(uploadError) throw uploadError;
-
-  const { data: imageData } = client.storage
-   .from("product-images")
-   .getPublicUrl(imagePath);
-
-  const { error: insertError } = await client
-   .from("products")
-   .insert({
-    owner_id: session.user.id,
-    category_id: category,
-    title: title,
-    description: description,
-    daily_price: price,
-    item_condition: condition,
-    city: city,
-    image_path: imageData.publicUrl,
-    is_active: true
-   });
-
-  if(insertError) throw insertError;
-
-  alert("Your item has been published!");
-  closeAddProduct();
-  location.reload();
-
- } catch(error) {
-  alert("Publishing failed: " + error.message);
- } finally {
-  button.disabled = false;
-  button.textContent = "Publish Item";
- }
-  }
- loadProducts();
-</script>
- <div id="addProductBox" style="display:none;position:fixed;inset:0;background:#071b16cc;z-index:60;overflow-y:auto;">
- <div class="add-product-box">
-  <h2>List Your Item</h2>
-
-  <label>Product Name</label>
-  <input type="text" id="newTitle" placeholder="Enter product name">
-
-  <label>Category</label>
-  <select id="newCategory">
-   <option value="">Select Category</option>
-  </select>
-
-  <label>Description</label>
-  <textarea id="newDescription" placeholder="Describe your item"></textarea>
-
-  <label>Daily Rental Price (₹)</label>
-  <input type="number" id="newPrice" placeholder="Enter daily price">
-
-  <label>Item Condition</label>
-  <select id="newCondition">
-   <option value="">Select condition</option>
-   <option value="New">New</option>
-   <option value="Like New">Like New</option>
-   <option value="Good">Good</option>
-   <option value="Fair">Fair</option>
-  </select>
-
-  <label>City</label>
-  <input type="text" id="newCity" placeholder="Enter your city">
-
-  <label>Product Image</label>
-  <input type="file" id="newImage" accept="image/*">
-
-  <button onclick="addProduct()">Publish Item</button>
-  <button class="close-btn" onclick="closeAddProduct()">Cancel</button>
- </div>
- </div>
- <div id="productDetails" style="display:none;position:fixed;inset:0;background:#071b16cc;z-index:50;align-items:center;justify-content:center;padding:20px">
- <div style="background:white;border-radius:20px;padding:25px;width:100%;max-width:450px">
-  <button onclick="closeDetails()" style="float:right;border:0;background:#eee;padding:8px 12px;border-radius:8px">✕</button>
-  <h2 id="detailName">Product Name</h2>
-  <img id="detailImage" src="" style="width:100%;height:200px;object-fit:cover;border-radius:12px">
-  <h2 id="detailPrice" style="color:#087f5b"></h2>
-  <p id="detailDescription"></p>
-  <p>✓ Rental availability can be confirmed with the owner.</p>
-  <button class="btn" style="width:100%" onclick="alert('Booking feature coming soon!')">Request Booking</button>
- </div>
- </div>
-</body>
-</html>
+fu
