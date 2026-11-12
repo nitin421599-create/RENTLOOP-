@@ -1,24 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RENTLOOP</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3f7f5;
-      text-align: center;
-      padding: 60px 20px;
-    }
-    h1 { color: #087f5b; font-size: 38px; }
-    p { color: #444; font-size: 18px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RENTLOOP</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f7f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 85%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 4px 20px #0001;
+}
+h1 { color: #087f5b; }
+input, button {
+  width: 100%;
+  padding: 13px;
+  margin: 9px 0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-size: 16px;
+}
+input { border: 1px solid #ccc; }
+button {
+  border: none;
+  background: #087f5b;
+  color: white;
+  font-weight: bold;
+}
+#message { font-size: 14px; }
+</style>
 </head>
 <body>
+
+<div class="box">
   <h1>RENTLOOP</h1>
   <p>Use More. Own Less.</p>
-  <h2>Welcome to RENTLOOP!</h2>
+  <h2>Welcome!</h2>
+
+  <input id="email" type="email" placeholder="Email address">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="signUp()">Create Account</button>
+  <button onclick="signIn()">Login</button>
+  <button onclick="signOut()">Logout</button>
+
+  <p id="message"></p>
+</div>
+
+<script>
+const supabaseClient = window.supabase.createClient(
+  "https://sevddlezaetefouudjnr.supabase.co",
+  "sb_publishable_2MDPQNpZZYhnUUWo765dgg_CangZ4sd"
+);
+
+async function signUp() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  document.getElementById("message").innerText =
+    error ? error.message : "Account created! Check your email to confirm.";
+}
+
+async function signIn() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  document.getElementById("message").innerText =
+    error ? error.message : "Login successful!";
+}
+
+async function signOut() {
+  const { error } = await supabaseClient.auth.signOut();
+  document.getElementById("message").innerText =
+    error ? error.message : "Logged out successfully!";
+}
+</script>
+
 </body>
 </html>
