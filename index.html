@@ -200,7 +200,7 @@ footer p{color:#b8cfc2;font-size:13px}
    </div>
    <div class="card-body">
     <h3>Cricket Kit</h3><p class="description">Gear up for your next game.</p>
-    <div class="card-bottom"><div class="price">₹150 <small>/ day</small></div><button class="btn" onclick="rent()">Rent Now</button></div>
+    <div class="card-bottom"><div class="price">₹150 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
    </div>
   </article>
 
@@ -211,7 +211,7 @@ footer p{color:#b8cfc2;font-size:13px}
    </div>
    <div class="card-body">
     <h3>DSLR Camera</h3><p class="description">Capture every special moment.</p>
-    <div class="card-bottom"><div class="price">₹500 <small>/ day</small></div><button class="btn" onclick="rent()">Rent Now</button></div>
+    <div class="card-bottom"><div class="price">₹500 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
    </div>
   </article>
 
@@ -222,7 +222,7 @@ footer p{color:#b8cfc2;font-size:13px}
    </div>
    <div class="card-body">
     <h3>Study Table</h3><p class="description">Create your perfect workspace.</p>
-    <div class="card-bottom"><div class="price">₹100 <small>/ day</small></div><button class="btn" onclick="rent()">Rent Now</button></div>
+    <div class="card-bottom"><div class="price">₹100 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
    </div>
   </article>
 
@@ -233,7 +233,7 @@ footer p{color:#b8cfc2;font-size:13px}
    </div>
    <div class="card-body">
     <h3>Bicycle</h3><p class="description">Enjoy a ride around the city.</p>
-    <div class="card-bottom"><div class="price">₹120 <small>/ day</small></div><button class="btn" onclick="rent()">Rent Now</button></div>
+    <div class="card-bottom"><div class="price">₹120 <small>/ day</small></div><button class="btn" onclick="rent(this)">Rent Now</button></div>
    </div>
   </article>
 
@@ -316,8 +316,7 @@ function searchProducts(){
   card.style.display=card.innerText.toLowerCase().includes(value)?"block":"none";
  });
 }
- function rent(){
- const button = window.event.currentTarget;
+ function rent(button){
  const card = button.closest(".card");
 
  document.getElementById("detailName").innerText = card.querySelector("h3").innerText;
@@ -326,7 +325,7 @@ function searchProducts(){
  document.getElementById("detailDescription").innerText = card.querySelector(".description").innerText;
 
  document.getElementById("productDetails").style.display = "flex";
-}
+ }
 
 function closeDetails(){
  document.getElementById("productDetails").style.display = "none";
