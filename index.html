@@ -295,7 +295,9 @@ async function login(){
  const {error}=await client.auth.signInWithPassword({email,password});
  document.getElementById("message").innerText=
  error ? error.message : "Login successful!";
-}
+ if(!error){
+ hideAuth();
+ }
 async function logout(){
  await client.auth.signOut();
 }
